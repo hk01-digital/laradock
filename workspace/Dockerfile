@@ -387,6 +387,18 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
 ;fi
 
 ###########################################################################
+# gRPC EXTENSION
+###########################################################################
+
+ARG WORKSPACE_INSTALL_GRPC=false
+
+RUN if [ ${WORKSPACE_INSTALL_GRPC} = true ]; then \
+    pecl install grpc; \
+    echo "extension=grpc.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/grpc.ini && \
+    ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-swoole.ini \
+;fi
+
+###########################################################################
 # Libpng16 EXTENSION
 ###########################################################################
 
@@ -682,6 +694,17 @@ RUN set -eux; if [ ${INSTALL_MSSQL} = true ]; then \
 ;fi
 
 ###########################################################################
+# bcmath:
+###########################################################################
+
+ARG INSTALL_BCMATH=false
+
+RUN if [ ${INSTALL_BCMATH} = true ]; then \
+    # Install the bcmath extension
+    docker-php-ext-install bcmath \
+;fi
+
+###########################################################################
 # Minio:
 ###########################################################################
 
@@ -772,6 +795,7 @@ RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
     && mv terraform /usr/local/bin \
     && rm terraform_0.10.6_linux_amd64.zip \
 ;fi
+
 ###########################################################################
 # pgsql client
 ###########################################################################
