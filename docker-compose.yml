@@ -446,6 +446,8 @@ services:
 ### RabbitMQ #############################################
     rabbitmq:
       build: ./rabbitmq
+      volumes:
+        - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
       ports:
         - "${RABBITMQ_NODE_HOST_PORT}:5672"
         - "${RABBITMQ_MANAGEMENT_HTTP_HOST_PORT}:15672"
