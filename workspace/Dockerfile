@@ -379,8 +379,16 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
       if [ $(php -r "echo PHP_MINOR_VERSION;") = "0" ]; then \
         pecl install swoole-2.2.0; \
       else \
-        printf "\n" | pecl install swoole; \
-      fi \
+        apt install -y libnghttp2-dev \
+        openssl libssh-dev \
+        libhiredis-dev && \
+        cd /root && pecl download swoole && \
+        tar -zxvf swoole-* && cd swoole-* && \
+        phpize && \
+        ./configure --enable-openssl  --enable-http2  --enable-async-redis && \
+        make && make install && \
+        rm -rf /root/swoole-* \
+      ;fi \
     fi && \
     echo "extension=swoole.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini && \
     ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-swoole.ini \
