@@ -379,7 +379,7 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
       if [ $(php -r "echo PHP_MINOR_VERSION;") = "0" ]; then \
         pecl install swoole-2.2.0; \
       else \
-        pecl install swoole; \
+        printf "\n" | pecl install swoole; \
       fi \
     fi && \
     echo "extension=swoole.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini && \
